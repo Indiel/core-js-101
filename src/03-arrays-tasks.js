@@ -310,13 +310,7 @@ function get3TopItems(arr) {
  *   [ 1, '2' ] => 1
  */
 function getPositivesCount(arr) {
-  return arr.reduce((acc, el) => {
-    if (el > 0) {
-      // eslint-disable-next-line no-param-reassign
-      acc += 1;
-    }
-    return acc;
-  }, 0);
+  return arr.filter((el) => (el > 0 && typeof el === 'number' ? el > 0 : false)).length;
 }
 
 /**
@@ -333,7 +327,29 @@ function getPositivesCount(arr) {
  *   [ 'one','one','one','zero' ]     => [ 'zero','one','one','one' ]
  */
 function sortDigitNamesByNumericOrder(arr) {
-  return arr.sort();
+  if (!arr.length) return arr;
+  const numbers = {
+    one: 1,
+    two: 2,
+    three: 3,
+    four: 4,
+    five: 5,
+    six: 6,
+    seven: 7,
+    eight: 8,
+    nine: 9,
+    zero: 0,
+  };
+
+  return arr.sort((a, b) => {
+    if (numbers[a] > numbers[b]) {
+      return 1;
+    }
+    if (numbers[a] < numbers[b]) {
+      return -1;
+    }
+    return 0;
+  });
 }
 
 /**
@@ -349,10 +365,6 @@ function sortDigitNamesByNumericOrder(arr) {
  *   [ 1, 10, 100, 1000 ]  => 1111
  */
 function getItemsSum(arr) {
-  // return arr.reduce((previousValue, currentValue) => {
-  //   return previousValue + currentValue;
-  // });
-
   // eslint-disable-next-line arrow-body-style
   return arr.reduce((prev, curr) => {
     return prev + curr;
@@ -448,25 +460,21 @@ function toStringList(arr) {
  *    ]
  */
 function sortCitiesArray(arr) {
-  function sortCity(a, b) {
-    if (a.city > b.city) {
-      return 1;
-    }
-    if (a.city < b.city) {
-      return -1;
-    }
-    return 0;
-  }
-
   return arr.sort((a, b) => {
     if (a.country > b.country) {
-      sortCity(a, b);
       return 1;
     }
     if (a.country < b.country) {
       return -1;
     }
-    sortCity(a, b);
+    if (a.country === b.country) {
+      if (a.city > b.city) {
+        return 1;
+      }
+      if (a.city < b.city) {
+        return -1;
+      }
+    }
     return 0;
   });
 }
